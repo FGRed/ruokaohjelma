@@ -1,0 +1,35 @@
+<html>
+<head>
+    <link rel="stylesheet" href="html/css/tyylit.css">
+</head>
+<body>
+<doctype html>
+    <title>Lisaa nimike</title>
+    <div class="main-page">
+    <form action="/lisaa-nimike" method="POST"  id="form_f" >
+        <p><h1>Lisaa nimike:</h1></p>
+        <label for="nimiid">Nimi:</label>
+        <input type="text" value="Nimikeen nimi" name="nimi" id="nimiid"  style="width: 200px">
+        <input type="button" value="Luo" onclick="form_f.submit()">
+    </form>
+        <div style="display: inline-block; width: 285px">
+            <a href="url">Resepti</a>
+            <input type="hidden" name="resepti-text">
+            <input type="button" onclick="" value="Lisää resepti..." style="float: right">
+        </div>
+        <br>
+    <br>
+    <div style="float:left">
+        <label for="tyyppiid">Tyyppi</label>
+        <select name="tyyppi" id="tyyppiid" form="form_f"  style="width: 100px">
+            <option value="AAMIAINEN">Aamiainen</option>
+            <option value="PAIVALLINEN">Paivallinen</option>
+            <option value="LOUNAS">Lounas</option>
+            <option value="ILLALLINEN">Illallinen</option>
+            <option value="RUOKAAINE">Ruoka-aine</option>
+        </select>
+    </div>
+    </div>
+</doctype>
+</body>
+</html>
