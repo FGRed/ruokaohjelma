@@ -20,17 +20,17 @@ public class LoadDatabase {
 
             Nimeke nimeke0 = new Nimeke();
             nimeke0.setNimi("Mannapuuro");
-            nimeke0.setTyyppi(Tyyppi.AAMIANEN);
+            nimeke0.setTyyppi(Tyyppi.AAMIAINEN);
             log.info("Preloading " + nimekeRepository.save(nimeke0));
 
             Nimeke nimeke0_1 = new Nimeke();
             nimeke0_1.setNimi("Mysli");
-            nimeke0_1.setTyyppi(Tyyppi.AAMIANEN);
+            nimeke0_1.setTyyppi(Tyyppi.AAMIAINEN);
             log.info("Preloading " + nimekeRepository.save(nimeke0_1));
 
             Nimeke nimeke0_2 = new Nimeke();
             nimeke0_2.setNimi("Banaani");
-            nimeke0_2.setTyyppi(Tyyppi.AAMIANEN);
+            nimeke0_2.setTyyppi(Tyyppi.AAMIAINEN);
             log.info("Preloading " + nimekeRepository.save(nimeke0_2));
 
 
@@ -46,7 +46,7 @@ public class LoadDatabase {
 
             Nimeke nimeke3 = new Nimeke();
             nimeke3.setNimi("Kolmen viljan puuro");
-            nimeke3.setTyyppi(Tyyppi.AAMIANEN);
+            nimeke3.setTyyppi(Tyyppi.AAMIAINEN);
             log.info("Preloading " + nimekeRepository.save(nimeke3));
 
             Nimeke nimeke4 = new Nimeke();

@@ -34,5 +34,8 @@ public interface NimekeRepository extends JpaRepository<Nimeke, Long> {
     @Query("SELECT n FROM Nimeke n WHERE n.tyyppi = 4")
     List<Nimeke> getRuokaAine();
 
+    @Query("SELECT n FROM Nimeke n WHERE n.tyyppi = :tyyppi")
+    List<Nimeke> getAllByTyypi(@Param("tyyppi") Tyyppi tyyppi);
+
 
 }

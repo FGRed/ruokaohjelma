@@ -1,26 +1,136 @@
 <html>
 <head>
     <link rel="stylesheet" href="html/css/tyylit.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script src="html/"></script>
+    <script>
+        let ansIndex = 0;
+        var nimikeMap = new Map();
+        function lisaaAinesosa(){
+            let lisaaLink = $("#lisaaLink");
+            $("#ainesosat > li:contains("+lisaaLink.val()+")").remove();
+            $("#ainesosat").append('<li id="opt_'+ansIndex+'">'+getNimekkeet(ansIndex)+'</li>');
+            $("#ainesosat").append(lisaaLink);
+            initSelects(ansIndex);
+            ansIndex++;
+        }
+
+        $(document).ready(function(){
+            let map = new Map();
+            map.set(1, "Test01");
+            map.set(1, "Test02");
+            console.log(map);
+        });
+            
+
+
+        function initSelects(ans){
+            const nimikeSelect = $('#nimikes_'+ans);
+            const tyyppiSelect = $('#tyyppis_'+ans);
+            const yksikkoSelect  = $('#metric_'+ans);
+            const maara = $("#maara_"+ans);
+            tyyppiSelect.change(function (){
+                nimikeSelect.empty();
+                getNimikeListaAjax(nimikeSelect, tyyppiSelect);
+            });
+            nimikeSelect.change(function () {
+                const nimikeId = $(this).children("option:selected").attr('id');
+                const elementId = $(this).attr('id');
+                nimikeMap.set(elementId, {"nimikeId": nimikeId,
+                                          "maara": maara.text(),
+                                          "yksikko":yksikkoSelect.children("option:selected")});
+                console.log(nimikeMap);
+            })
+           // getNimikeListaAjax($('#nimikes_'+ansIndex, $('#tyyppis_'+ansIndex)));
+        }
+
+        function getNimikeListaAjax(nimikeSelect, tyyppiSelect){
+
+            let data = tyyppiSelect.children("option:selected").val();
+            $.post("/nimekkeet/get-by-tyyppi", {"selected-tyyppi":data})
+                .done(function(nimekkeet) {
+                    nimekkeet.forEach(function(nimeke){
+                        nimikeSelect.append('<option id="'+nimeke.id+'">'+nimeke.nimi+'</option>');
+                    });
+                })
+                .fail(function(data){
+                    alert(data);
+                    console.log(data);
+                });
+
+
+        }
+
+
+        function getNimekkeet(ans){
+            var select = "<select name=\"select0\" id=\"nimikes_"+ans+"\" style=\"margin-left: 3px;\">";
+            select += '</select>';
+
+            select += "<select name=\"select1\" id=\"tyyppis_"+ans+"\" style=\"margin-left: 3px;\">";
+            select += '     <option>RUOKAAINE</option>';
+            select += '     <option>AAMIAINEN</option>';
+            select += '     <option>LOUNAS</option>';
+            select += '     <option>ILLALLINEN</option>';
+            select += '</select>';
+
+            select+='<input type="text" name="quantity" id="maara_"'+ans+' value="1" style="width: 75px">';
+            select += "<select name=\"select2\" id=\"metric_"+ans+"\" style=\"margin-left: 3px; width: 40px\">";
+            select += '     <option>kpl</option>';
+            select += '     <option>ml</option>';
+            select += '     <option>tl</option>';
+            select += '     <option>rkl</option>';
+            select += '     <option>dl</option>';
+            select += '</select>';
+
+            select+='<a href="javascript:poistaAinesosa('+ans+');" style=\"margin-left: 3px;\">x</a>';
+
+            return select;
+        }
+        function poistaAinesosa(ans){
+            var item = $('#opt_'+ans);
+            nimikeMap.delete('nimikes_'+ans);
+            item.remove();
+        }
+
+        function postData(){
+
+            $.post("/lisaa-nimike", {"ruoka-aineet":createArrayString(nimikeMap)})
+                .done(function(nimekkeet) {
+                    nimekkeet.forEach(function(nimeke){
+                        nimikeSelect.append('<option id="'+nimeke.id+'">'+nimeke.nimi+'</option>');
+                    });
+                })
+                .fail(function(data){
+                    alert("Error!");
+                });
+        }
+        function createArrayString(map){
+            let retVal = '';
+            map.forEach( (value) => {
+                retVal+=value+',';
+            });
+            return retVal;
+        }
+
+
+
+    </script>
 </head>
 <body>
 <doctype html>
     <title>Lisaa nimike</title>
     <div class="main-page">
-    <form action="/lisaa-nimike" method="POST"  id="form_f" >
+  <!--  <form action="/lisaa-nimike" method="POST"  id="form_f" >-->
         <p><h1>Lisaa nimike:</h1></p>
         <label for="nimiid">Nimi:</label>
         <input type="text" value="Nimikeen nimi" name="nimi" id="nimiid"  style="width: 200px">
-        <input type="button" value="Luo" onclick="form_f.submit()">
-    </form>
-        <div style="display: inline-block; width: 285px">
-            <a href="url">Resepti</a>
-            <input type="hidden" name="resepti-text">'
-        </div>
-        <br>
+        <input type="button" value="Luo" onclick="javascript:postData();">
+    <!--</form>-->
     <br>
     <div style="float:left">
         <label for="tyyppiid">Tyyppi</label>
-        <select name="tyyppi" id="tyyppiid" form="form_f"  style="width: 100px">
+        <select name="tyyppi" id="tyyppiid"  style="width: 100px">
             <option value="AAMIAINEN">Aamiainen</option>
             <option value="PAIVALLINEN">Paivallinen</option>
             <option value="LOUNAS">Lounas</option>
@@ -28,10 +138,17 @@
             <option value="RUOKAAINE">Ruoka-aine</option>
         </select>
     </div>
+        <br>
         <div>
-            <h2>Resepti:</h2>
-            <label for="ohje">Ohje</label>
-            <textarea name="ohje" id="ohje"></textarea>
+                <h2>Resepti:</h2>
+                <label for="ohje">Ohje</label>
+                <textarea name="ohje" id="ohje" style="resize: none; height: 200px; width: 250px; vertical-align: top"></textarea>
+                <div>
+                    <label for="ainesosat">Ainesosat:</label>
+                    <ol id="ainesosat">
+                        <li id="lisaaLink" style="list-style-type: none;"><a href="javascript:lisaaAinesosa();">lisää ainesosa...</a></li>
+                    </ol>
+                </div>
         </div>
     </div>
 </doctype>

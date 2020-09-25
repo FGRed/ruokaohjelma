@@ -2,7 +2,6 @@ package com.example.ruokaohjelma.ruokaohjelma.service;
 
 import com.example.ruokaohjelma.ruokaohjelma.AteriaParameterBuilder;
 import com.example.ruokaohjelma.ruokaohjelma.enums.Tyyppi;
-import com.example.ruokaohjelma.ruokaohjelma.model.Nimeke;
 import com.example.ruokaohjelma.ruokaohjelma.model.PaivanAteria;
 import com.example.ruokaohjelma.ruokaohjelma.model.Paiva;
 import com.example.ruokaohjelma.ruokaohjelma.repository.PaivanAteriaRepository;
@@ -77,7 +76,7 @@ public class ViikkoListaRadomizer {
         List<Long> lisatytIltapalat = new ArrayList<>();
         List<Long> lisatytLounaat = new ArrayList<>();
 
-        final long AAMIAISTEN_MAARA = nimekeRepository.getCountByTyyppi(Tyyppi.AAMIANEN);
+        final long AAMIAISTEN_MAARA = nimekeRepository.getCountByTyyppi(Tyyppi.AAMIAINEN);
         final long PAIVALLISTEN_MAARA = nimekeRepository.getCountByTyyppi(Tyyppi.PAIVALLINEN);
         final long LOUNAITTEN_MAARA = nimekeRepository.getCountByTyyppi(Tyyppi.LOUNAS);
         final long ILLALLISTEN_MAARA = nimekeRepository.getCountByTyyppi(Tyyppi.ILLALLINEN);
@@ -97,7 +96,7 @@ public class ViikkoListaRadomizer {
 
             //AAMIAINEN
             calendar2.set(Calendar.HOUR, 8);
-            PaivanAteria aamiainen = generateRandomAteriaByTyyppi(lisatytAaamiaiset, AAMIAISTEN_MAARA,Tyyppi.AAMIANEN, calendar2.getTime(), salliSamatSamalleViikolle, ateriaParameterBuilder.isAamiainenAny());
+            PaivanAteria aamiainen = generateRandomAteriaByTyyppi(lisatytAaamiaiset, AAMIAISTEN_MAARA,Tyyppi.AAMIAINEN, calendar2.getTime(), salliSamatSamalleViikolle, ateriaParameterBuilder.isAamiainenAny());
             paivanAterias.add(aamiainen);
             paivanAteriaRepository.save(aamiainen);
             //

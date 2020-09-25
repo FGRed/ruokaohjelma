@@ -1,7 +1,7 @@
 package com.example.ruokaohjelma.ruokaohjelma.enums;
 
 public enum Tyyppi {
-        AAMIANEN,
+        AAMIAINEN,
         LOUNAS,
         PAIVALLINEN,
         ILLALLINEN,
